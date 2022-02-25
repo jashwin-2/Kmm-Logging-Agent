@@ -1,10 +1,10 @@
-package com.example.kmmapplication
+package com.example.logging_agent
 
 
 import android.util.Base64
 import android.util.Log
-import com.example.kmmapplication.model.JsonData
-import com.example.kmmapplication.model.SessionDetails
+import com.example.logging_agent.model.JsonData
+import com.example.logging_agent.model.SessionDetails
 import com.google.gson.Gson
 
 import java.io.IOException
@@ -26,10 +26,13 @@ actual class WebSocketHandler actual constructor(var sessionDetails: SessionDeta
     var messages = ArrayBlockingQueue<String>(20)
     actual var isClientConnected = false
 
-
+         init {
+             log("webhand opened")
+         }
     actual fun handle(client: PlatformSocket) {
         try {
             platformSocket = client
+            Log.d("Server", "handle")
             val input = client.getInputStream()
             out = client.getOutputStream()
             val s = Scanner(input, "UTF-8")

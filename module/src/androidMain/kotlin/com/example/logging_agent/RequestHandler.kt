@@ -1,4 +1,4 @@
-package com.example.kmmapplication
+package com.example.logging_agent
 
 import android.content.res.AssetManager
 import android.text.TextUtils
@@ -31,6 +31,7 @@ actual class RequestHandler actual constructor(val platformSocket : PlatformSock
             val inp = platformSocket.getInputStream()
             val s = Scanner(inp, "UTF-8")
             val data: String = s.useDelimiter("\\r\\n\\r\\n").next()
+            log(data)
             // Read HTTP headers and parse out the route.
             reader = BufferedReader(InputStreamReader(platformSocket.getInputStream()))
            var line: String
@@ -43,7 +44,7 @@ actual class RequestHandler actual constructor(val platformSocket : PlatformSock
                }
            }
            output = PrintStream(platformSocket.getOutputStream())
-        
+            route?.let { log(it) }
            // Output stream that we send the response to
            if (route == null || route.isEmpty()) {
                route = "home.html"
